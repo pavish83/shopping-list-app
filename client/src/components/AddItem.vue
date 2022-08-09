@@ -105,9 +105,11 @@ export default {
       }
     }
     .add-item-form {
-      height: 333px;
       display: flex;
       flex-direction: column;
+      @media only screen and (min-width: 768px) {
+        margin: 0 auto;
+      }
     }
   }
 </style>
