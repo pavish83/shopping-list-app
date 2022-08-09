@@ -11,7 +11,7 @@
   font-size: 15px;
   font-style: normal;
   unicode-range: U+000-5FF;
-  src: local("Inter"), url("../public/fonts/Inter-Regular.woff2") format("woff2"), url("../public/fonts/Inter-Regular.woff") format("woff");
+  src: local("Inter"), url("../public/fonts/Inter-Regular.woff") format("woff");
 }
 @font-face {
   font-family: "Montserrat Alternates";
@@ -26,19 +26,8 @@
   --main-color: #585666;
   --gray-color: #B1B0B8;
   --border-color: #E3E3E6;
+  --error-color: #ff0000;
 }
-// html {
-//   &:after {
-//     position: absolute;
-//     left: 0;
-//     top: 100%;
-//     height: 1px;
-//     background: var(--border-color);
-//     content: "";
-//     width: 100%;
-//     display: block;
-//   }
-// }
 #app {
   font-family: 'Inter';
   font-style: normal;

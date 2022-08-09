@@ -79,6 +79,9 @@ export default {
     grid-template-columns: 50px 2px 60% 20%;
     margin: 20px 0;
     padding: 15px 15px;
+    @media only screen and (min-width: 768px) {
+      grid-template-columns: 50px 2px 75% 20%;
+    }
   }
   .total-info {
     display: flex;
@@ -107,7 +110,6 @@ export default {
     min-height: 200px;
   }
   .footer-divider {
-    //margin: 200px 0 60px 0;
     width:100%;
     height:100px;
     position:absolute;

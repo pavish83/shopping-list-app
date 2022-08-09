@@ -1,12 +1,13 @@
 import { createStore } from 'vuex'
-//import heplerFunctions from "../utils/helperMethods.js";
+import axios from 'axios'
 
 export default createStore({
   state: {
     currency: 'NIS',
     shoppingItems: [],
     showAddItemModal: false,
-    loading: false
+    loading: false,
+    showServerError: false
   },
   getters: {
     getShoppingItems: (state) => {
@@ -29,13 +30,15 @@ export default createStore({
     TOGGLE_LOADER(state, payload) {
       state.loading = payload
     },
+    TOGGLE_SHOW_SERVER_ERROR(state, payload) {
+      state.showServerError = payload
+    },
   },
   actions: {
     async GET_ITEMS({commit}){
       commit('TOGGLE_LOADER',true);
-      await fetch("http://localhost:3000/api/items")
-      .then(response => response.json())
-      .then(data => { commit('UPDATE_ITEMS', data)})
+      await axios.get("http://localhost:3000/api/items")
+      .then(response => commit('UPDATE_ITEMS', response.data))
       .catch(e => console.warn(e))
       .finally(() => {
         commit('TOGGLE_LOADER',false);
@@ -43,45 +46,37 @@ export default createStore({
     },
     async DELETE_ITEM({commit, dispatch}, idToDelete) {
       commit('TOGGLE_LOADER',true);
+      commit('TOGGLE_SHOW_SERVER_ERROR',false);
 
-      const requestOptions = {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' }
-      }
-      await fetch(`http://localhost:3000/api/item/${idToDelete}`, requestOptions)
+      await axios.delete(`http://localhost:3000/api/item/${idToDelete}`)
         .then(() => dispatch('GET_ITEMS'))
-        .catch(e => console.warn(e))
+        .catch(() => commit('TOGGLE_SHOW_SERVER_ERROR',true))
         .finally(() => {
           commit('TOGGLE_LOADER',false);
         })
     },
     async UPDATE_COMPLETE({commit, dispatch}, id) {
       commit('TOGGLE_LOADER',true);
-      const requestOptions = {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' }
-      }
-      await fetch(`http://localhost:3000/api/item/${id}`, requestOptions)
+      commit('TOGGLE_SHOW_SERVER_ERROR',false);
+      
+      await axios.put(`http://localhost:3000/api/item/${id}`)
         .then(() => dispatch('GET_ITEMS'))
-        .catch(e => console.warn(e))
+        .catch(() => commit('TOGGLE_SHOW_SERVER_ERROR',true))
         .finally(() => {
           commit('TOGGLE_LOADER',false);
         })
     },
     async ADD_ITEM({commit, dispatch}, payload) {
       commit('TOGGLE_LOADER',true);
+      commit('TOGGLE_SHOW_SERVER_ERROR',false);
       let data = {
         complete: false,
         ...payload
       }
-      const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ data })
-      }
-      await fetch('http://localhost:3000/api/item', requestOptions)
+    
+      await axios.post('http://localhost:3000/api/item', data)
         .then(() => dispatch('GET_ITEMS'))
-        .catch(e => console.warn(e))
+        .catch(() => commit('TOGGLE_SHOW_SERVER_ERROR',true))
         .finally(() => {
           commit('TOGGLE_LOADER',false);
           commit('TOGGLE_ADD_ITEM_MODAL');

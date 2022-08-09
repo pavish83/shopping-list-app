@@ -87,7 +87,7 @@ export default {
       border: none;
       background: none;
       align-self: end;
-      margin-top: 176px;
+      margin-top: 100px;
       margin-right: 8px;
       cursor: pointer;
     }

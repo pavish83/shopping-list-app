@@ -91,6 +91,16 @@ export default {
     position: relative; 
     &.complete {
       color: var(--border-color);
+      &:after {
+        position: absolute;
+        left: 0;
+        top: 36%;
+        height: 1px;
+        background: var(--border-color);
+        content: "";
+        width: 100%;
+        display: block;
+      }
     }
   }
   .item-container {
@@ -99,6 +109,9 @@ export default {
     margin: 20px 0;
     padding: 10px 15px;
     border-bottom: 1px solid var(--border-color);
+    @media only screen and (min-width: 768px) {
+      grid-template-columns: 50px 2px 75% 20%;
+    }
   }
   .action-btn-container {
     display: flex;

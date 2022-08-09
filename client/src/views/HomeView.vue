@@ -5,6 +5,12 @@
       <ItemsList :items="shoppingItems"/>
       <AddItem v-if="showAddItemModal" />
     </div>
+    <div v-if="showServerError" class="error-message">
+      <img src="../assets/triangle-exclamation.svg" alt="error">
+      <div>
+        Something went wrong please try again
+      </div>
+    </div>
   </div>
 </template>
 
@@ -27,10 +33,17 @@ export default {
     ...mapActions(['GET_ITEMS']),
   },
   computed: {
-    ...mapState(['showAddItemModal', 'shoppingItems']),
+    ...mapState(['showAddItemModal', 'shoppingItems', 'showServerError']),
   },
 }
 </script>
 <style lang="scss">
-  
+  .error-message {
+    color: var(--error-color);
+    display: flex;
+    justify-content: center;
+    img {
+      margin-right: 10px;
+    }
+  }
 </style>

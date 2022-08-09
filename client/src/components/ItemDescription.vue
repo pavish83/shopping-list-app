@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="item-description">
     <div class="back-button">
       <router-link to="/">
         <img src="../assets/back.svg" alt="back">
@@ -40,5 +40,8 @@ export default {
     position: absolute;
     top: 68px;
     left: 24px;
+  }
+  .item-description section {
+    margin: 0 10px;
   }
 </style>
