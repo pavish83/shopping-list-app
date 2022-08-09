@@ -7,17 +7,20 @@
       <div class="add-item-row">
         <div>
           <label for="name">Name</label>
-          <input type="text" name="name"  v-model="dataForm['name']" required>
+          <input type="text" name="name"  v-model="dataForm.name">
+          <span class="form-error-message" v-if="showErrors && !nameIsValid">name is required</span>
         </div>
         <div>
           <label for="price">Price</label>
-          <input type="number" name="price" v-model="dataForm['price']" required>
+          <input type="number" name="price" v-model.number="dataForm.price">
+          <span class="form-error-message" v-if="showErrors && !priceIsValid">price is required and must be a number</span>
         </div>
       </div>
       <div class="add-item-row">
         <div>
           <label for="description">Description</label>
-          <textarea name="description" rows="5" cols="21" v-model="dataForm['description']" required></textarea>
+          <textarea name="description" rows="5" cols="21" v-model="dataForm.description"></textarea>
+          <span class="form-error-message" v-if="showErrors &&  !descriptionIsValid">description is required</span>
         </div>
       </div>
       <button type="submit">
@@ -33,14 +36,38 @@ export default {
   name: 'AddItem',
   data() {
     return {
-      dataForm: {}
+      dataForm: {
+        name: null,
+        price: null,
+        description: null
+      },
+      showErrors: false,
+    }
+  },
+  computed: {
+    nameIsValid() {
+      return !!this.dataForm.name;
+    },
+    priceIsValid() {
+      return !!this.dataForm.price && typeof this.dataForm.price === 'number';
+    },
+    descriptionIsValid() {
+      return !!this.dataForm.description;
     }
   },
   methods: {
     ...mapMutations(['TOGGLE_ADD_ITEM_MODAL']),
     ...mapActions(['ADD_ITEM']),
     saveItem() {
-      this.ADD_ITEM(this.dataForm);
+      const formIsValid = this.nameIsValid && this.priceIsValid && this.descriptionIsValid;
+
+      if(formIsValid) {
+        this.showErrors = false;
+        this.ADD_ITEM(this.dataForm);
+      } else {
+        this.showErrors = true;
+      }
+
     },
     closeModal() {
       this.TOGGLE_ADD_ITEM_MODAL();
@@ -110,6 +137,9 @@ export default {
       @media only screen and (min-width: 768px) {
         margin: 0 auto;
       }
+    }
+    .form-error-message {
+      color: var(--error-color);
     }
   }
 </style>
