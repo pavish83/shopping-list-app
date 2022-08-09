@@ -1,5 +1,5 @@
 # shopping-list-app
-The repository consists of 2 folders - client(VueJs), server(Nodejs/express)
+The repository includes 2 folders - client(Vue application), server(Node.js/express) - for serving api requests
 
 ## Project setup - Client
 npm install
